@@ -1,5 +1,4 @@
 add@/devices/pci0000:00/0000:00:1c.0/0000:01:00.0/0000:02:00.0/graphics/fb0 ACTION=add DEVPATH=/devices/pci0000:00/0000:00:1c.0/0000:01:00.0/0000:02:00.0/graphics/fb0 SUBSYSTEM=graphics MAJOR=29 MINOR=0 DEVNAME=fb0 SEQNUM=71040
-add@/devices/virtual/dmi/id ACTION=add DEVPATH=/devices/virtual/dmi/id SUBSYSTEM=dmi MODALIAS=dmi:bvnIntelCorporation:bvrSE5C620.86B.00.01.0009.101920170742:bd10/19/2017:svnIntelCorporation:pnS2600STB:pvr....................:rvnIntelCorporation:rnS2600STB:rvrJ17012-500:cvn...............................:ct23:cvr..................: SEQNUM=72191
 add@/devices/virtual/mem/null ACTION=add DEVPATH=/devices/virtual/mem/null SUBSYSTEM=mem MAJOR=1 MINOR=3 DEVNAME=null DEVMODE=0666 SEQNUM=72196
 add@/devices/virtual/mem/urandom ACTION=add DEVPATH=/devices/virtual/mem/urandom SUBSYSTEM=mem MAJOR=1 MINOR=9 DEVNAME=urandom DEVMODE=0666 SEQNUM=72200
 add@/devices/virtual/tty/tty ACTION=add DEVPATH=/devices/virtual/tty/tty SUBSYSTEM=tty MAJOR=5 MINOR=0 DEVNAME=tty DEVMODE=0666 SEQNUM=72207

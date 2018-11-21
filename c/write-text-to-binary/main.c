@@ -4,6 +4,13 @@
 #define BUF_LEN 1024
 #define NEW_FILE    "new.bin"
 
+char *text_file_path = "dump_all.txt";
+
+void print_usage(char *command) {
+
+        printf("[Usage]\n\t%s <text_file_path>\n\n", command);
+}
+
 int write_bin(char *ctx, int size) {
 
     printf("[write_bin] ctx\t%s\n", ctx);
@@ -61,12 +68,19 @@ int write_text_to_bin(char *path) {
 
 int main(int argc, char **argv) {
 
+    printf("\n");
+
     if (argc >= 2) {
-        write_text_to_bin(argv[1]);
+        if ( ! strncmp(argv[1], "-h", 2) ) {
+            print_usage(argv[0]);
+            return -1;
+        } else {
+            text_file_path = argv[1];
+        }
     }
 
+    int ret = write_text_to_bin(text_file_path);
 
-//    write_text_to_bin("my.bin");
-
+    printf("\n");
     return 0;
 }

@@ -1,0 +1,18 @@
+add@/devices/pci0000:00/0000:00:1c.0/0000:01:00.0/0000:02:00.0/graphics/fb0 ACTION=add DEVPATH=/devices/pci0000:00/0000:00:1c.0/0000:01:00.0/0000:02:00.0/graphics/fb0 SUBSYSTEM=graphics MAJOR=29 MINOR=0 DEVNAME=fb0 SEQNUM=71040
+add@/devices/virtual/dmi/id ACTION=add DEVPATH=/devices/virtual/dmi/id SUBSYSTEM=dmi MODALIAS=dmi:bvnIntelCorporation:bvrSE5C620.86B.00.01.0009.101920170742:bd10/19/2017:svnIntelCorporation:pnS2600STB:pvr....................:rvnIntelCorporation:rnS2600STB:rvrJ17012-500:cvn...............................:ct23:cvr..................: SEQNUM=72191
+add@/devices/virtual/mem/null ACTION=add DEVPATH=/devices/virtual/mem/null SUBSYSTEM=mem MAJOR=1 MINOR=3 DEVNAME=null DEVMODE=0666 SEQNUM=72196
+add@/devices/virtual/mem/urandom ACTION=add DEVPATH=/devices/virtual/mem/urandom SUBSYSTEM=mem MAJOR=1 MINOR=9 DEVNAME=urandom DEVMODE=0666 SEQNUM=72200
+add@/devices/virtual/tty/tty ACTION=add DEVPATH=/devices/virtual/tty/tty SUBSYSTEM=tty MAJOR=5 MINOR=0 DEVNAME=tty DEVMODE=0666 SEQNUM=72207
+add@/devices/virtual/tty/ptmx ACTION=add DEVPATH=/devices/virtual/tty/ptmx SUBSYSTEM=tty MAJOR=5 MINOR=2 DEVNAME=ptmx DEVMODE=0666 SEQNUM=72208
+add@/devices/virtual/misc/ashmem ACTION=add DEVPATH=/devices/virtual/misc/ashmem SUBSYSTEM=misc MAJOR=10 MINOR=51 DEVNAME=ashmem SEQNUM=72287
+add@/devices/virtual/misc/binder0 ACTION=add DEVPATH=/devices/virtual/misc/binder0 SUBSYSTEM=misc MAJOR=10 MINOR=52 DEVNAME=binder0 SEQNUM=72295
+add@/devices/virtual/misc/binder1 ACTION=add DEVPATH=/devices/virtual/misc/binder1 SUBSYSTEM=misc MAJOR=10 MINOR=256 DEVNAME=binder1 SEQNUM=72296
+add@/devices/virtual/misc/binder2 ACTION=add DEVPATH=/devices/virtual/misc/binder2 SUBSYSTEM=misc MAJOR=10 MINOR=257 DEVNAME=binder2 SEQNUM=72297
+add@/devices/virtual/misc/binder3 ACTION=add DEVPATH=/devices/virtual/misc/binder3 SUBSYSTEM=misc MAJOR=10 MINOR=258 DEVNAME=binder3 SEQNUM=72298
+add@/devices/virtual/misc/binder4 ACTION=add DEVPATH=/devices/virtual/misc/binder4 SUBSYSTEM=misc MAJOR=10 MINOR=259 DEVNAME=binder4 SEQNUM=72299
+add@/devices/virtual/misc/binder5 ACTION=add DEVPATH=/devices/virtual/misc/binder5 SUBSYSTEM=misc MAJOR=10 MINOR=260 DEVNAME=binder5 SEQNUM=72300
+add@/devices/virtual/misc/binder6 ACTION=add DEVPATH=/devices/virtual/misc/binder6 SUBSYSTEM=misc MAJOR=10 MINOR=261 DEVNAME=binder6 SEQNUM=72301
+add@/devices/virtual/misc/binder7 ACTION=add DEVPATH=/devices/virtual/misc/binder7 SUBSYSTEM=misc MAJOR=10 MINOR=262 DEVNAME=binder7 SEQNUM=72302
+add@/devices/virtual/misc/binder8 ACTION=add DEVPATH=/devices/virtual/misc/binder8 SUBSYSTEM=misc MAJOR=10 MINOR=263 DEVNAME=binder8 SEQNUM=72303
+add@/devices/virtual/misc/binder9 ACTION=add DEVPATH=/devices/virtual/misc/binder9 SUBSYSTEM=misc MAJOR=10 MINOR=264 DEVNAME=binder9 SEQNUM=72304
+add@/devices/virtual/input/mice ACTION=add DEVPATH=/devices/virtual/input/mice SUBSYSTEM=input MAJOR=13 MINOR=63 DEVNAME=input/mice SEQNUM=72323

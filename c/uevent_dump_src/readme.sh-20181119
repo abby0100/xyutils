@@ -1,0 +1,9 @@
+#!/bin/bash
+
+    rm /dev/.uevent_dump_done
+    rm -fr /uevent_dump/devices/
+
+    ./uevent_dump.sh
+    
+    ls -l /uevent_dump/devices/dump_all
+

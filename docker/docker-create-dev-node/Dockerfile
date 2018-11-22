@@ -10,10 +10,11 @@ FROM ubuntu:bionic
 #        && apt-get install -y gcc 
 #build-essential
 
-COPY src/create-dev-node.sh /create-dev-node.sh
+COPY src/create_devices.sh /create_devices.sh
+COPY src/xycreator /xycreator
 
 #CMD ls -l /
 
-#ENTRYPOINT ["/uevent_dumper"]
 #ENTRYPOINT ["/uevent_dump/src/uevent_dump.sh"]
+ENTRYPOINT ["/xycreator"]
 

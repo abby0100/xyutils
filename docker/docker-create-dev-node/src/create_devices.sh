@@ -22,13 +22,19 @@ function check-permission {
 
 function make-dev-node {
     myecho 'make-dev-node'
-    echo 'https://blog.csdn.net/yinwei520/article/details/5789613'
+#    echo 'https://blog.csdn.net/yinwei520/article/details/5789613'
 
+    myecho 'check'
+    ls -l --color /dev/kmsg
+
+    myecho 'create'
     # crw------- 1 root   root        1,  11 1970-01-01 08:00 kmsg
     mknod -m 600 /dev/kmsg c 1 11
     #chmod
     #chown
 
+    myecho 'check'
+    ls -l --color /dev/kmsg
 }
 
 function main {

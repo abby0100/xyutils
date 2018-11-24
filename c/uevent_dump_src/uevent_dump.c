@@ -13,18 +13,26 @@
 
 #define UEVENT_MSG_LEN  2048
 #define NETLINK_KOBJECT_UEVENT 15
-#define DUMP_PATH "/uevent_dump/devices/"
-#define DUMP_DONE "/dev/.uevent_dump_done"
+#define DUMP_PATH   "/uevent_dump/devices/"
+#define DUMP_DONE   "/dev/.uevent_dump_done"
+#define DUMP_FILTER "dev_filter.conf"
 
 //#define SCM_RIGHTS  0x01            /* rw: access rights (array of int) */
 #define SCM_CREDENTIALS 0x02        /* rw: struct ucred     */
 //#define SCM_SECURITY    0x03        /* rw: security label       */
-//
+
+#define CHAR_ARRAY_LEN  512         
+#define BUF_LEN         1024
+
 struct ucred {
     __u32   pid;
     __u32   uid;
     __u32   gid;
 };
+
+static int has_filter = 0;
+static int array_len = 0;
+static char **filter_keywords;
 
 static int device_fd = -1;
 static int uevent_index = 0;
@@ -56,7 +64,76 @@ int uevent_open_socket(int buf_sz, int passcred)
     return s;
 }
 
-static int write_uevent_dump(const char *msg, int size) {
+static int parse_dump_filter() {
+    //printf("parse_dump_filter\n");
+
+    if (has_filter) {
+        return 0;
+    }
+
+    if (access(DUMP_FILTER, F_OK) != 0) {
+        return -1;
+    }
+
+    FILE *fp = NULL;
+    if ( (fp = fopen(DUMP_FILTER, "r")) == NULL ) {
+        return -1;
+    }
+
+    char buf[BUF_LEN];
+    memset(buf, 0, sizeof(buf));
+
+    while ( !feof(fp) && fgets(buf, sizeof(buf), fp) != NULL ) {
+
+        if ('#' == buf[0]) {
+            continue;
+        }
+
+        //printf("parse_dump_filter fgets buf: %s\n", buf);
+        //printf("parse_dump_filter fgets save to filter_keywords %d\n", array_len);
+        if (strlen(buf) <= 0 || buf[0] == '\n') {
+            printf("no keyword in this line\n");
+            continue;
+        }
+
+        filter_keywords[array_len] = (char *) malloc(sizeof(char) * strlen(buf));
+        strncpy(filter_keywords[array_len], buf, strlen(buf) - 1);
+        printf("parse_dump_filter fgets keyword[%d]: %s\n", array_len, filter_keywords[array_len]);
+
+        if (filter_keywords[array_len][0] == ' ') {
+            printf("parse_dump_filter fgets keyword[%d]: blank\n", array_len);
+        } else if (filter_keywords[array_len][0] == '\n') {
+            printf("parse_dump_filter fgets keyword[%d]: enter\n", array_len);
+        }
+        array_len++;
+        
+        memset(buf, 0, sizeof(buf));
+    }
+
+    has_filter = 1;
+    fclose(fp);
+    return 0;
+}
+
+static int contain_keywords(char *str) {
+    //printf("contain_keywords\n");
+    
+    if (parse_dump_filter() != 0) {
+        return -1;
+    }
+
+    while (*str) {
+        //if(strstr(str, "tty") != NULL) {
+        if(strstr(str, "ptmx") != NULL) {
+            return 0;    
+        }
+        str += strlen(str);
+    }
+
+    return -1;
+}
+    
+static int write_uevent_dump(char *msg, int size) {
 
     FILE *fp;
     int write_len;
@@ -68,6 +145,12 @@ static int write_uevent_dump(const char *msg, int size) {
         return -1;
     }
 
+    if(contain_keywords(msg) != 0) {
+        //printf("not contain keywords, skipping...\n");
+        fclose(fp);
+        return 0; 
+    }
+    
     while(*msg) {
         write_len = fwrite(msg, 1, strlen(msg), fp);
         if (write_len != (int)strlen(msg))
@@ -262,6 +345,8 @@ void device_init() {
 int dump_host_devices() {
 
     int listen = 1;
+    filter_keywords = (char **) malloc(sizeof(char *) * CHAR_ARRAY_LEN);
+    memset(filter_keywords, 0, sizeof(char *) * CHAR_ARRAY_LEN);
 
     printf("start to dump!\n");
     //if(access(dump_path, F_OK) == 0) {
@@ -295,5 +380,10 @@ int dump_host_devices() {
     }
 */
 
+    int i;
+    for (i = 0; i < array_len; ++i) {
+        free((void *)filter_keywords[i]);
+    }
+    free((void *)filter_keywords);
 }
 

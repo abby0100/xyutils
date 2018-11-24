@@ -14,8 +14,14 @@ int filter_file(char *path) {
         xylog("file '%s' not exsited", path);
         return -1;
     }
-
     xylog("file '%s' exsited", path);
+
+    if(check_has_substr("hello world", "o_wor") != 0) {
+        xylog("don't have substr");
+    } else {
+        xylog("have substr");
+    }
+
     return 0;
 }
 

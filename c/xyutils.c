@@ -10,7 +10,7 @@
 #define STRING_LEN  256
 
 
-int check_pointer_invalid(void *ptr) {
+int check_ptr_invalid(void *ptr) {
     xylogd();
     
     if (NULL == ptr) {
@@ -25,7 +25,7 @@ int print_util_usage(char *command, char *param1, char *usage) {
     //xylogd("command\t%s", command);
     //xylogd("param1\t%s", param1);
     
-    if ( check_pointer_invalid(command) != 0 && check_pointer_invalid(param1) != 0 ) {
+    if ( check_ptr_invalid(command) != 0 && check_ptr_invalid(param1) != 0 ) {
         return -1;
     }
 
@@ -37,11 +37,21 @@ int print_util_usage(char *command, char *param1, char *usage) {
 int check_file_exist(char *path) {
     xylogd();
 
-    if (check_pointer_invalid(path) != 0) {
+    if (check_ptr_invalid(path) != 0) {
         return -1;
     }
 
     if (access(path, F_OK) != 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
+int check_has_substr(char *str, char *substr) {
+    xylogd();
+
+    if(strstr(str, substr) == NULL) {
         return -1;
     }
 

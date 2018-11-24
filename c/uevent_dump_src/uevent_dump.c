@@ -65,7 +65,6 @@ int uevent_open_socket(int buf_sz, int passcred)
 }
 
 static int parse_dump_filter() {
-    //printf("parse_dump_filter\n");
 
     if (has_filter) {
         return 0;
@@ -89,22 +88,14 @@ static int parse_dump_filter() {
             continue;
         }
 
-        //printf("parse_dump_filter fgets buf: %s\n", buf);
-        //printf("parse_dump_filter fgets save to filter_keywords %d\n", array_len);
         if (strlen(buf) <= 0 || buf[0] == '\n') {
-            printf("no keyword in this line\n");
+            //printf("no keyword in this line\n");
             continue;
         }
 
         filter_keywords[array_len] = (char *) malloc(sizeof(char) * strlen(buf));
         strncpy(filter_keywords[array_len], buf, strlen(buf) - 1);
-        printf("parse_dump_filter fgets keyword[%d]: %s\n", array_len, filter_keywords[array_len]);
 
-        if (filter_keywords[array_len][0] == ' ') {
-            printf("parse_dump_filter fgets keyword[%d]: blank\n", array_len);
-        } else if (filter_keywords[array_len][0] == '\n') {
-            printf("parse_dump_filter fgets keyword[%d]: enter\n", array_len);
-        }
         array_len++;
         
         memset(buf, 0, sizeof(buf));
@@ -115,24 +106,46 @@ static int parse_dump_filter() {
     return 0;
 }
 
-static int contain_keywords(char *str) {
-    //printf("contain_keywords\n");
+static int check_contain_keywords(char *str) {
     
     if (parse_dump_filter() != 0) {
         return -1;
     }
 
+    int i;
     while (*str) {
-        //if(strstr(str, "tty") != NULL) {
-        if(strstr(str, "ptmx") != NULL) {
-            return 0;    
+        for(i = 0; i < array_len; ++i) {
+            if(strstr(str, filter_keywords[i]) != NULL) {
+                return 0;    
+            }
         }
-        str += strlen(str);
+        str += strlen(str) + 1;
     }
 
     return -1;
 }
     
+// exception: tty0* ~ tty9*
+// make sure only tty is needed instead of tty*
+static int check_has_exception(char *str) {
+
+    char *temp = str;
+    char *substr;
+
+    while (*temp) {
+        substr = strstr(temp, "DEVNAME=tty");
+        if (NULL != substr) {
+            if (substr[11] >= '0' && substr[11] <= '9' || substr[11] == 'S' || substr[11] == 'p') {
+                return 0;
+            }
+        }
+
+        temp += strlen(temp) + 1;
+    }
+
+    return -1;
+}
+
 static int write_uevent_dump(char *msg, int size) {
 
     FILE *fp;
@@ -145,12 +158,18 @@ static int write_uevent_dump(char *msg, int size) {
         return -1;
     }
 
-    if(contain_keywords(msg) != 0) {
-        //printf("not contain keywords, skipping...\n");
+    if(check_contain_keywords(msg) != 0) {
+        // skip this line due to not contain any of the keywords
         fclose(fp);
         return 0; 
     }
     
+    if(check_has_exception(msg) == 0) {
+        // skip this exception keywords
+        fclose(fp);
+        return 0;
+    }
+
     while(*msg) {
         write_len = fwrite(msg, 1, strlen(msg), fp);
         if (write_len != (int)strlen(msg))

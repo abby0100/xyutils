@@ -1,10 +1,10 @@
 #!/bin/bash
 
     rm /dev/.uevent_dump_done
-    rm -fr /uevent_dump/devices/
+    rm -fr /uevent_dump/uevent_dump_src/dev.conf
 
     ./uevent_dump.sh
     
     #ls -l /uevent_dump/devices/dump_all
-    cat -n /uevent_dump/devices/dump_all
+    cat -n /uevent_dump/uevent_dump_src/dev.conf
 
